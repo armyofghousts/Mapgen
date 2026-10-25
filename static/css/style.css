@@ -1,0 +1,402 @@
+:root {
+  --bg: #1c1a17;
+  --panel: #2a2621;
+  --panel-2: #353028;
+  --text: #f3efe6;
+  --muted: #b7ae9f;
+  --accent: #c45c26;
+  --accent-2: #e0a45a;
+  --danger: #a33b2d;
+  --line: #4a4338;
+  --map-bg: #c4a574;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+  --font: "Segoe UI", "Trebuchet MS", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(circle at top left, #3a3228, var(--bg) 55%);
+  color: var(--text);
+  font-family: var(--font);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: 100vh;
+  min-height: 640px;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--panel), #221e19);
+  border-right: 1px solid var(--line);
+  padding: 1.1rem 1rem 1.5rem;
+  overflow: auto;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+  color: var(--accent-2);
+}
+
+.brand p {
+  margin: 0.2rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+select,
+input[type="text"],
+input[type="file"],
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: #9a481e;
+}
+
+.btn.primary.active {
+  outline: 2px solid var(--accent-2);
+}
+
+.btn.danger {
+  background: var(--danger);
+  border-color: #7d2d22;
+}
+
+.details {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  padding: 0.75rem;
+  min-height: 8rem;
+}
+
+.details h3 {
+  margin: 0 0 0.4rem;
+}
+
+.details p {
+  margin: 0.35rem 0;
+  line-height: 1.35;
+}
+
+.location-actions {
+  margin-top: 0.75rem;
+}
+
+.wiki-result {
+  margin-top: 0.75rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.wiki-result h4 {
+  margin: 0 0 0.4rem;
+  color: var(--accent-2);
+}
+
+.wiki-result p {
+  margin: 0.35rem 0;
+  line-height: 1.35;
+}
+
+.wiki-result a {
+  color: var(--accent-2);
+}
+
+.wiki-result.wiki-error {
+  border-color: #7d2d22;
+  color: #f0c2bc;
+}
+
+.wiki-result.wiki-empty {
+  border-color: var(--line);
+}
+
+.muted,
+.status,
+.hint {
+  color: var(--muted);
+}
+
+.status {
+  min-height: 1.2rem;
+  font-size: 0.85rem;
+}
+
+.main {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+  padding: 0.85rem;
+  gap: 0.75rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.map-frame {
+  height: calc(100vh - 5.5rem);
+  min-height: 480px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: var(--map-bg);
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  background-color: var(--map-bg);
+  background-image: url("../img/parchment.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Keep empty map panes transparent so the parchment shows through. */
+.leaflet-container .leaflet-pane,
+.leaflet-container .leaflet-map-pane,
+.leaflet-container .leaflet-tile-pane,
+.leaflet-container .leaflet-overlay-pane {
+  background: transparent;
+}
+
+.leaflet-container.placing {
+  cursor: crosshair;
+}
+
+.map-pin {
+  background: transparent;
+  border: none;
+}
+
+.map-pin-inner {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+  user-select: none;
+}
+
+.map-pin-img {
+  width: 26px;
+  height: 26px;
+  display: block;
+  pointer-events: none;
+}
+
+.details-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.details-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.icon-picker {
+  border: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+}
+
+.icon-picker legend {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 0;
+  margin-bottom: 0.35rem;
+}
+
+.icon-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+}
+
+.icon-option {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  margin: 0;
+  padding: 0.35rem 0.15rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.icon-option img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.icon-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icon-option:has(input:checked) {
+  border-color: var(--accent-2);
+  background: rgba(224, 164, 90, 0.14);
+  color: var(--text);
+  box-shadow: 0 0 0 1px var(--accent-2);
+}
+
+.icon-option:hover {
+  filter: brightness(1.08);
+}
+
+.toast {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  background: #14301c;
+  color: #d9ffe4;
+  border: 1px solid #2f6b43;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--shadow);
+  z-index: 2000;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.modal[hidden] {
+  display: none !important;
+}
+
+.modal-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  padding: 1.1rem;
+  width: min(420px, 92vw);
+  box-shadow: var(--shadow);
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-card h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .map-frame {
+    height: 70vh;
+  }
+}

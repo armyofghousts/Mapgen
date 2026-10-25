@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>mapgen</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <header class="brand">
+        <h1>mapgen</h1>
+        <p>Fantasy map encyclopedia</p>
+      </header>
+
+      <section class="panel">
+        <h2>Maps</h2>
+        <label class="field">
+          <span>Saved maps</span>
+          <select id="map-select"></select>
+        </label>
+        <div class="row">
+          <button type="button" id="btn-delete-map" class="btn danger">Delete map</button>
+        </div>
+        <label class="field">
+          <span>Upload PNG / JPG</span>
+          <input type="file" id="map-upload" accept=".png,.jpg,.jpeg,image/png,image/jpeg" />
+        </label>
+        <p id="map-status" class="status"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Locations</h2>
+        <label class="field">
+          <span>Select location</span>
+          <select id="location-select"></select>
+        </label>
+        <div id="location-details" class="details">
+          <p class="muted">No location selected.</p>
+        </div>
+        <div class="row location-actions">
+          <button type="button" id="btn-wiki-info" class="btn" hidden>
+            Load Wiki Info
+          </button>
+          <button type="button" id="btn-delete-location" class="btn danger" hidden>
+            Delete location
+          </button>
+        </div>
+        <div id="wiki-result" class="wiki-result" hidden></div>
+      </section>
+    </aside>
+
+    <main class="main">
+      <div class="toolbar">
+        <button type="button" id="btn-reset" class="btn">Reset view</button>
+        <button type="button" id="btn-place" class="btn primary">Add location</button>
+        <p id="hint" class="hint">
+          Drag to pan · scroll to zoom · Add location, then click the map
+        </p>
+      </div>
+      <div id="map" class="map-frame"></div>
+      <p id="toast" class="toast" hidden></p>
+    </main>
+  </div>
+
+  <div id="location-dialog" class="modal" hidden>
+    <div class="modal-card">
+      <form id="location-form">
+        <h2>Add location</h2>
+        <p id="click-coords" class="muted"></p>
+        <label class="field">
+          <span>Name</span>
+          <input type="text" id="loc-name" maxlength="80" required />
+        </label>
+        <fieldset class="field icon-picker">
+          <legend>Icon</legend>
+          <div class="icon-options" role="radiogroup" aria-label="Location icon">
+            <label class="icon-option">
+              <input type="radio" name="loc-icon" value="house" />
+              <img src="{{ url_for('static', filename='img/icons/house.svg') }}" alt="" />
+              <span>House</span>
+            </label>
+            <label class="icon-option">
+              <input type="radio" name="loc-icon" value="castle" />
+              <img src="{{ url_for('static', filename='img/icons/castle.svg') }}" alt="" />
+              <span>Castle</span>
+            </label>
+            <label class="icon-option">
+              <input type="radio" name="loc-icon" value="dragon" />
+              <img src="{{ url_for('static', filename='img/icons/dragon.svg') }}" alt="" />
+              <span>Dragon</span>
+            </label>
+            <label class="icon-option">
+              <input type="radio" name="loc-icon" value="forest" />
+              <img src="{{ url_for('static', filename='img/icons/forest.svg') }}" alt="" />
+              <span>Forest</span>
+            </label>
+            <label class="icon-option">
+              <input type="radio" name="loc-icon" value="alert" checked />
+              <img src="{{ url_for('static', filename='img/icons/alert.svg') }}" alt="" />
+              <span>Alert</span>
+            </label>
+          </div>
+        </fieldset>
+        <label class="field">
+          <span>Description</span>
+          <textarea id="loc-description" rows="3"></textarea>
+        </label>
+        <label class="field">
+          <span>Characters (one per line)</span>
+          <textarea id="loc-characters" rows="2"></textarea>
+        </label>
+        <label class="field">
+          <span>Units (one per line)</span>
+          <textarea id="loc-units" rows="2"></textarea>
+        </label>
+        <label class="field">
+          <span>Monsters (one per line)</span>
+          <textarea id="loc-monsters" rows="2"></textarea>
+        </label>
+        <div class="row">
+          <button type="submit" class="btn primary">Save</button>
+          <button type="button" class="btn" id="btn-cancel-form">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

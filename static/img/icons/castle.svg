@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <circle cx="32" cy="32" r="31" fill="#111"/>
+  <g fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- left tower -->
+    <path d="M14 48V22h4v-4h4v4h4v26"/>
+    <!-- right tower -->
+    <path d="M38 48V22h4v-4h4v4h4v26"/>
+    <!-- lower center wall between towers -->
+    <path d="M26 48V34h12v14"/>
+    <!-- gate arch -->
+    <path d="M29 48v-6a3 3 0 0 1 6 0v6"/>
+  </g>
+</svg>
