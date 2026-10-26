@@ -177,9 +177,6 @@ def create_location(
     description: str,
     x: int,
     y: int,
-    characters: list[str],
-    units: list[str],
-    monsters: list[str],
     icon: str = "alert",
 ) -> dict:
     loc = {
@@ -189,9 +186,6 @@ def create_location(
         "x": int(x),
         "y": int(y),
         "icon": normalize_icon(icon),
-        "characters": characters,
-        "units": units,
-        "monsters": monsters,
     }
     locations = get_locations(data, filename)
     locations.append(loc)

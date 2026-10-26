@@ -261,13 +261,30 @@ textarea {
   line-height: 0;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
   user-select: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 
 .map-pin-img {
-  width: 26px;
-  height: 26px;
+  width: 100%;
+  height: 100%;
   display: block;
   pointer-events: none;
+}
+
+.map-pin.is-selected .map-pin-inner {
+  width: 36px;
+  height: 36px;
+  transform: scale(1.08);
+  border-radius: 50%;
+  overflow: hidden;
+  background: #14532d;
+  filter: drop-shadow(0 0 6px rgba(20, 83, 45, 0.9));
+}
+
+.map-pin.is-selected .map-pin-img {
+  /* Keep white strokes; turn the black circle into dark green via backdrop */
+  filter: none;
+  mix-blend-mode: lighten;
 }
 
 .details-title {
@@ -305,16 +322,12 @@ textarea {
 .icon-option {
   display: grid;
   justify-items: center;
-  gap: 0.25rem;
   cursor: pointer;
   margin: 0;
-  padding: 0.35rem 0.15rem;
+  padding: 0.35rem;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel-2);
-  color: var(--muted);
-  font-size: 0.72rem;
-  text-align: center;
 }
 
 .icon-option img {

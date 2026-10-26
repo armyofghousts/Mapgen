@@ -3,11 +3,6 @@
 import { pixelToLatLng, rememberCamera } from "./map.js";
 import { iconMeta, iconImgHtml } from "./icons.js";
 
-function listOrNone(items) {
-  if (!items || !items.length) return "_None_";
-  return items.join(", ");
-}
-
 function escapeHtml(text) {
   return String(text)
     .replaceAll("&", "&amp;")
@@ -16,31 +11,41 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;");
 }
 
-function markerIcon(iconKey) {
+function markerIcon(iconKey, selected = false) {
   const meta = iconMeta(iconKey);
+  const size = selected ? 36 : 26;
+  const half = size / 2;
   return L.divIcon({
-    className: "map-pin",
+    className: selected ? "map-pin is-selected" : "map-pin",
     html: `<div class="map-pin-inner" title="${meta.label}">${iconImgHtml(iconKey, "map-pin-img")}</div>`,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
-    popupAnchor: [0, -13],
+    iconSize: [size, size],
+    iconAnchor: [half, half],
+    popupAnchor: [0, -half],
   });
 }
 
 export function renderMarkers(ctx) {
   const { state } = ctx;
+  if (!state.markersLayer) return;
   state.markersLayer.clearLayers();
 
   for (const loc of state.locations) {
+    const selected = loc.id === state.selectedLocationId;
     const marker = L.marker(pixelToLatLng(loc.x, loc.y), {
-      icon: markerIcon(loc.icon),
+      icon: markerIcon(loc.icon, selected),
       keyboard: false,
+      zIndexOffset: selected ? 500 : 0,
     });
     marker.bindTooltip(loc.name || "Unnamed");
     marker.on("click", (event) => {
       L.DomEvent.stopPropagation(event);
       if (state.placing) return;
-      selectLocation(ctx, loc.id, { pan: false });
+      // Clicking the already selected pin clears the selection.
+      if (state.selectedLocationId === loc.id) {
+        selectLocation(ctx, null, { pan: false });
+      } else {
+        selectLocation(ctx, loc.id, { pan: false });
+      }
     });
     state.markersLayer.addLayer(marker);
   }
@@ -63,20 +68,25 @@ export function fillLocationSelect(ctx) {
     return;
   }
 
+  const noneOpt = document.createElement("option");
+  noneOpt.value = "";
+  noneOpt.textContent = "No location selected";
+  els.locationSelect.appendChild(noneOpt);
+
   for (const loc of state.locations) {
-    const meta = iconMeta(loc.icon);
     const opt = document.createElement("option");
     opt.value = loc.id;
-    opt.textContent = `${meta.label}: ${loc.name || "Unnamed"}`;
+    opt.textContent = loc.name || "Unnamed";
     els.locationSelect.appendChild(opt);
   }
 
   const stillThere = state.locations.some((l) => l.id === state.selectedLocationId);
   if (!stillThere) {
-    state.selectedLocationId = state.locations[0].id;
+    state.selectedLocationId = null;
   }
-  els.locationSelect.value = state.selectedLocationId;
+  els.locationSelect.value = state.selectedLocationId || "";
   renderLocationDetails(ctx, state.selectedLocationId);
+  renderMarkers(ctx);
 }
 
 export function renderLocationDetails(ctx, locationId) {
@@ -91,17 +101,11 @@ export function renderLocationDetails(ctx, locationId) {
     return;
   }
 
-  const meta = iconMeta(loc.icon);
   els.btnDeleteLocation.hidden = false;
   if (els.btnWikiInfo) els.btnWikiInfo.hidden = false;
   els.locationDetails.innerHTML = `
     <h3 class="details-title">${iconImgHtml(loc.icon, "details-icon")} ${escapeHtml(loc.name || "Unnamed")}</h3>
-    <p>${escapeHtml(loc.description || "No description")}</p>
-    <p><strong>Icon:</strong> ${meta.label}</p>
-    <p><strong>Coordinates:</strong> (${loc.x}, ${loc.y})</p>
-    <p><strong>Characters</strong><br>${escapeHtml(listOrNone(loc.characters))}</p>
-    <p><strong>Units</strong><br>${escapeHtml(listOrNone(loc.units))}</p>
-    <p><strong>Monsters</strong><br>${escapeHtml(listOrNone(loc.monsters))}</p>
+    <p><strong>Personal description</strong><br>${escapeHtml(loc.description || "None")}</p>
   `;
 }
 
@@ -133,16 +137,18 @@ export function renderWikiResult(els, payload) {
 
 export function selectLocation(ctx, locationId, { pan = false } = {}) {
   const { state, els } = ctx;
-  state.selectedLocationId = locationId;
+  state.selectedLocationId = locationId || null;
 
-  if ([...els.locationSelect.options].some((o) => o.value === locationId)) {
-    els.locationSelect.value = locationId;
+  const value = state.selectedLocationId || "";
+  if ([...els.locationSelect.options].some((o) => o.value === value)) {
+    els.locationSelect.value = value;
   }
   clearWikiResult(els);
-  renderLocationDetails(ctx, locationId);
+  renderLocationDetails(ctx, state.selectedLocationId);
+  renderMarkers(ctx);
 
-  if (pan) {
-    const loc = state.locations.find((l) => l.id === locationId);
+  if (pan && state.selectedLocationId) {
+    const loc = state.locations.find((l) => l.id === state.selectedLocationId);
     if (loc) {
       rememberCamera(state);
       state.map.panTo(pixelToLatLng(loc.x, loc.y), { animate: true });

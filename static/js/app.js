@@ -33,9 +33,6 @@ const els = {
     if (radio) radio.checked = true;
   },
   locDescription: document.getElementById("loc-description"),
-  locCharacters: document.getElementById("loc-characters"),
-  locUnits: document.getElementById("loc-units"),
-  locMonsters: document.getElementById("loc-monsters"),
   btnCancelForm: document.getElementById("btn-cancel-form"),
   mapEl: document.getElementById("map"),
 };

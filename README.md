@@ -1,6 +1,6 @@
 # mapgen
 
-A simple **Flask + Leaflet** fantasy map encyclopedia.
+A simple **Flask + Leaflet** warhammer fantasy map encyclopedia.
 
 Upload map images, pan/zoom without page reloads, place locations and store everything locally as JSON.
 

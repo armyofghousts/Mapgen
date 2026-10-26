@@ -55,16 +55,22 @@ export function initMap(ctx) {
   state.map.on("zoomend", () => rememberCamera(state));
 
   state.map.on("click", (event) => {
-    if (!state.placing || !state.activeMap) return;
-    L.DomEvent.stopPropagation(event);
-    const { x, y } = latLngToPixel(
-      event.latlng.lat,
-      event.latlng.lng,
-      state.width,
-      state.height
-    );
-    state.pendingClick = { x, y };
-    ctx.ui.openLocationDialog(ctx, x, y);
+    if (state.placing && state.activeMap) {
+      L.DomEvent.stopPropagation(event);
+      const { x, y } = latLngToPixel(
+        event.latlng.lat,
+        event.latlng.lng,
+        state.width,
+        state.height
+      );
+      state.pendingClick = { x, y };
+      ctx.ui.openLocationDialog(ctx, x, y);
+      return;
+    }
+    // Click empty map to clear the current location selection.
+    if (state.selectedLocationId) {
+      ctx.locations.selectLocation(ctx, null, { pan: false });
+    }
   });
 }
 

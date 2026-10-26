@@ -136,9 +136,6 @@ def add_location():
         description=str(body.get("description") or ""),
         x=x,
         y=y,
-        characters=storage.parse_list_field(body.get("characters")),
-        units=storage.parse_list_field(body.get("units")),
-        monsters=storage.parse_list_field(body.get("monsters")),
         icon=storage.normalize_icon(body.get("icon")),
     )
     storage.save_data(data)

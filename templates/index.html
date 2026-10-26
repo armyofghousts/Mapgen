@@ -82,48 +82,31 @@
         <fieldset class="field icon-picker">
           <legend>Icon</legend>
           <div class="icon-options" role="radiogroup" aria-label="Location icon">
-            <label class="icon-option">
+            <label class="icon-option" title="House">
               <input type="radio" name="loc-icon" value="house" />
-              <img src="{{ url_for('static', filename='img/icons/house.svg') }}" alt="" />
-              <span>House</span>
+              <img src="{{ url_for('static', filename='img/icons/house.svg') }}" alt="House" />
             </label>
-            <label class="icon-option">
+            <label class="icon-option" title="Castle">
               <input type="radio" name="loc-icon" value="castle" />
-              <img src="{{ url_for('static', filename='img/icons/castle.svg') }}" alt="" />
-              <span>Castle</span>
+              <img src="{{ url_for('static', filename='img/icons/castle.svg') }}" alt="Castle" />
             </label>
-            <label class="icon-option">
+            <label class="icon-option" title="Dragon">
               <input type="radio" name="loc-icon" value="dragon" />
-              <img src="{{ url_for('static', filename='img/icons/dragon.svg') }}" alt="" />
-              <span>Dragon</span>
+              <img src="{{ url_for('static', filename='img/icons/dragon.svg') }}" alt="Dragon" />
             </label>
-            <label class="icon-option">
+            <label class="icon-option" title="Forest">
               <input type="radio" name="loc-icon" value="forest" />
-              <img src="{{ url_for('static', filename='img/icons/forest.svg') }}" alt="" />
-              <span>Forest</span>
+              <img src="{{ url_for('static', filename='img/icons/forest.svg') }}" alt="Forest" />
             </label>
-            <label class="icon-option">
+            <label class="icon-option" title="Alert">
               <input type="radio" name="loc-icon" value="alert" checked />
-              <img src="{{ url_for('static', filename='img/icons/alert.svg') }}" alt="" />
-              <span>Alert</span>
+              <img src="{{ url_for('static', filename='img/icons/alert.svg') }}" alt="Alert" />
             </label>
           </div>
         </fieldset>
         <label class="field">
-          <span>Description</span>
+          <span>Personal description</span>
           <textarea id="loc-description" rows="3"></textarea>
-        </label>
-        <label class="field">
-          <span>Characters (one per line)</span>
-          <textarea id="loc-characters" rows="2"></textarea>
-        </label>
-        <label class="field">
-          <span>Units (one per line)</span>
-          <textarea id="loc-units" rows="2"></textarea>
-        </label>
-        <label class="field">
-          <span>Monsters (one per line)</span>
-          <textarea id="loc-monsters" rows="2"></textarea>
         </label>
         <div class="row">
           <button type="submit" class="btn primary">Save</button>

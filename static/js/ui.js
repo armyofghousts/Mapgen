@@ -47,9 +47,6 @@ export function openLocationDialog(ctx, x, y) {
   els.locName.value = "";
   els.setLocIcon("alert");
   els.locDescription.value = "";
-  els.locCharacters.value = "";
-  els.locUnits.value = "";
-  els.locMonsters.value = "";
   els.dialog.hidden = false;
   els.locName.focus();
 }
@@ -58,14 +55,6 @@ export function closeLocationDialog(ctx) {
   const { state, els } = ctx;
   els.dialog.hidden = true;
   state.pendingClick = null;
-}
-
-function linesToList(text) {
-  return text
-    .replaceAll(",", "\n")
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
 }
 
 export function fillMapSelect(ctx) {
@@ -136,7 +125,8 @@ export function bindEvents(ctx) {
 
   els.locationSelect.addEventListener("change", () => {
     rememberCamera(state);
-    selectLocation(ctx, els.locationSelect.value, { pan: false });
+    const value = els.locationSelect.value || null;
+    selectLocation(ctx, value, { pan: false });
   });
 
   els.btnDeleteLocation.addEventListener("click", async () => {
@@ -220,9 +210,6 @@ export function bindEvents(ctx) {
       x: state.pendingClick.x,
       y: state.pendingClick.y,
       icon: els.getLocIcon(),
-      characters: linesToList(els.locCharacters.value),
-      units: linesToList(els.locUnits.value),
-      monsters: linesToList(els.locMonsters.value),
     };
     if (!body.name) {
       showToast(els, "Name is required");
