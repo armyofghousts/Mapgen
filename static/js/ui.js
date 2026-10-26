@@ -42,7 +42,11 @@ export function setPlacing(ctx, on) {
 }
 
 export function openLocationDialog(ctx, x, y) {
-  const { els } = ctx;
+  const { state, els } = ctx;
+  state.editingLocationId = null;
+  state.pendingClick = { x, y };
+  if (els.formTitle) els.formTitle.textContent = "Add location";
+  els.clickCoords.hidden = false;
   els.clickCoords.textContent = `Clicked at (${x}, ${y})`;
   els.locName.value = "";
   els.setLocIcon("alert");
@@ -51,10 +55,27 @@ export function openLocationDialog(ctx, x, y) {
   els.locName.focus();
 }
 
+export function openEditLocationDialog(ctx, loc) {
+  const { state, els } = ctx;
+  state.editingLocationId = loc.id;
+  state.pendingClick = { x: loc.x, y: loc.y };
+  if (els.formTitle) els.formTitle.textContent = "Edit location";
+  els.clickCoords.hidden = true;
+  els.clickCoords.textContent = "";
+  els.locName.value = loc.name || "";
+  els.setLocIcon(loc.icon || "alert");
+  els.locDescription.value = loc.description || "";
+  els.dialog.hidden = false;
+  els.locName.focus();
+}
+
 export function closeLocationDialog(ctx) {
   const { state, els } = ctx;
   els.dialog.hidden = true;
   state.pendingClick = null;
+  state.editingLocationId = null;
+  els.clickCoords.hidden = false;
+  if (els.formTitle) els.formTitle.textContent = "Add location";
 }
 
 export function fillMapSelect(ctx) {
@@ -143,6 +164,22 @@ export function bindEvents(ctx) {
     }
   });
 
+  if (els.btnEditLocation) {
+    els.btnEditLocation.addEventListener("click", () => {
+      if (!state.selectedLocationId) {
+        showToast(els, "Select a location first");
+        return;
+      }
+      const loc = state.locations.find((l) => l.id === state.selectedLocationId);
+      if (!loc) {
+        showToast(els, "Select a location first");
+        return;
+      }
+      setPlacing(ctx, false);
+      openEditLocationDialog(ctx, loc);
+    });
+  }
+
   if (els.btnWikiInfo) {
     els.btnWikiInfo.addEventListener("click", async () => {
       if (!state.selectedLocationId) {
@@ -202,28 +239,43 @@ export function bindEvents(ctx) {
 
   els.form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!state.pendingClick) return;
 
-    const body = {
-      name: els.locName.value.trim(),
-      description: els.locDescription.value,
-      x: state.pendingClick.x,
-      y: state.pendingClick.y,
-      icon: els.getLocIcon(),
-    };
-    if (!body.name) {
+    const name = els.locName.value.trim();
+    if (!name) {
       showToast(els, "Name is required");
       return;
     }
 
+    const editingId = state.editingLocationId;
     try {
       rememberCamera(state);
-      const payload = await api.createLocation(body);
-      closeLocationDialog(ctx);
-      setPlacing(ctx, false);
-      state.selectedLocationId = payload.created && payload.created.id;
-      ctx.applyState(payload, { preserveCamera: true });
-      showToast(els, `Saved “${body.name}”`);
+      let payload;
+      if (editingId) {
+        payload = await api.updateLocation(editingId, {
+          name,
+          description: els.locDescription.value,
+          icon: els.getLocIcon(),
+        });
+        closeLocationDialog(ctx);
+        setPlacing(ctx, false);
+        state.selectedLocationId = editingId;
+        ctx.applyState(payload, { preserveCamera: true });
+        showToast(els, `Updated “${name}”`);
+      } else {
+        if (!state.pendingClick) return;
+        payload = await api.createLocation({
+          name,
+          description: els.locDescription.value,
+          x: state.pendingClick.x,
+          y: state.pendingClick.y,
+          icon: els.getLocIcon(),
+        });
+        closeLocationDialog(ctx);
+        setPlacing(ctx, false);
+        state.selectedLocationId = payload.created && payload.created.id;
+        ctx.applyState(payload, { preserveCamera: true });
+        showToast(els, `Saved “${name}”`);
+      }
     } catch (err) {
       showToast(els, err.message);
     }

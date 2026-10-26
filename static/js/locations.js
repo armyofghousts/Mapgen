@@ -61,6 +61,7 @@ export function fillLocationSelect(ctx) {
     opt.textContent = "No locations yet";
     els.locationSelect.appendChild(opt);
     els.btnDeleteLocation.hidden = true;
+    if (els.btnEditLocation) els.btnEditLocation.hidden = true;
     if (els.btnWikiInfo) els.btnWikiInfo.hidden = true;
     clearWikiResult(els);
     els.locationDetails.innerHTML =
@@ -96,12 +97,14 @@ export function renderLocationDetails(ctx, locationId) {
   if (!loc) {
     els.locationDetails.innerHTML = `<p class="muted">No location selected.</p>`;
     els.btnDeleteLocation.hidden = true;
+    if (els.btnEditLocation) els.btnEditLocation.hidden = true;
     if (els.btnWikiInfo) els.btnWikiInfo.hidden = true;
     clearWikiResult(els);
     return;
   }
 
   els.btnDeleteLocation.hidden = false;
+  if (els.btnEditLocation) els.btnEditLocation.hidden = false;
   if (els.btnWikiInfo) els.btnWikiInfo.hidden = false;
   els.locationDetails.innerHTML = `
     <h3 class="details-title">${iconImgHtml(loc.icon, "details-icon")} ${escapeHtml(loc.name || "Unnamed")}</h3>

@@ -46,6 +46,9 @@
           <p class="muted">No location selected.</p>
         </div>
         <div class="row location-actions">
+          <button type="button" id="btn-edit-location" class="btn" hidden>
+            Edit location
+          </button>
           <button type="button" id="btn-wiki-info" class="btn" hidden>
             Load Wiki Info
           </button>
@@ -73,7 +76,7 @@
   <div id="location-dialog" class="modal" hidden>
     <div class="modal-card">
       <form id="location-form">
-        <h2>Add location</h2>
+        <h2 id="location-form-title">Add location</h2>
         <p id="click-coords" class="muted"></p>
         <label class="field">
           <span>Name</span>

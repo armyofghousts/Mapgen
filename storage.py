@@ -193,6 +193,26 @@ def create_location(
     return loc
 
 
+def update_location(
+    data: dict,
+    filename: str,
+    location_id: str,
+    *,
+    name: str,
+    description: str,
+    icon: str = "alert",
+) -> dict | None:
+    locations = get_locations(data, filename)
+    for loc in locations:
+        if loc.get("id") != location_id:
+            continue
+        loc["name"] = name.strip()
+        loc["description"] = description.strip()
+        loc["icon"] = normalize_icon(icon)
+        return loc
+    return None
+
+
 def delete_location(data: dict, filename: str, location_id: str) -> bool:
     locations = get_locations(data, filename)
     new_locs = [loc for loc in locations if loc.get("id") != location_id]

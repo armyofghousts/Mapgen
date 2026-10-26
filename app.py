@@ -144,6 +144,35 @@ def add_location():
     return jsonify(state)
 
 
+@app.put("/api/locations/<location_id>")
+def edit_location(location_id: str):
+    body = request.get_json(silent=True) or {}
+    data = storage.sync_maps_with_disk(storage.load_data())
+    active = data.get("map_filename")
+    if not active:
+        return api_error("No active map", 400)
+
+    name = str(body.get("name") or "").strip()
+    if not name:
+        return api_error("Name is required")
+
+    loc = storage.update_location(
+        data,
+        active,
+        location_id,
+        name=name,
+        description=str(body.get("description") or ""),
+        icon=storage.normalize_icon(body.get("icon")),
+    )
+    if not loc:
+        return api_error("Location not found", 404)
+
+    storage.save_data(data)
+    state = build_state()
+    state["updated"] = loc
+    return jsonify(state)
+
+
 @app.delete("/api/locations/<location_id>")
 def remove_location(location_id: str):
     data = storage.sync_maps_with_disk(storage.load_data())

@@ -39,6 +39,14 @@ export function createLocation(body) {
   });
 }
 
+export function updateLocation(locationId, body) {
+  return api(`/api/locations/${encodeURIComponent(locationId)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
 export function deleteLocation(locationId) {
   return api(`/api/locations/${encodeURIComponent(locationId)}`, {
     method: "DELETE",
