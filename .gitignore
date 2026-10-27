@@ -12,9 +12,6 @@ __pycache__/
 dist/
 build/
 
-# Local app data (uploaded maps and saved locations)
-data/
-
 # Flask
 instance/
 

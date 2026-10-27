@@ -1,0 +1,81 @@
+{
+  "map_filename": "map.jpg",
+  "maps": {
+    "map.jpg": {
+      "locations": [
+        {
+          "id": "6134186c-a8ca-4232-8a82-fd840f4d6145",
+          "name": "Avelorn",
+          "description": "Home to the Everqueen",
+          "x": 1633,
+          "y": 2267,
+          "icon": "castle"
+        },
+        {
+          "id": "35e807ec-1528-4b4b-a43f-56cbc8a4b936",
+          "name": "lothern",
+          "description": "",
+          "x": 1629,
+          "y": 3528,
+          "icon": "castle"
+        },
+        {
+          "id": "fe8f7178-f56e-4f9c-b070-1a060cb8d586",
+          "name": "Shrine of Asuryan",
+          "description": "",
+          "x": 1645,
+          "y": 3026,
+          "icon": "house"
+        },
+        {
+          "id": "4c5da9fb-1f72-48db-bec9-347ac793d884",
+          "name": "Beastmen",
+          "description": "",
+          "x": 2655,
+          "y": 2175,
+          "icon": "dragon"
+        },
+        {
+          "id": "33498feb-c834-4f71-8d34-4605b3197465",
+          "name": "Ellyrion",
+          "description": "Home to the great riders of Ellyrion",
+          "x": 855,
+          "y": 2195,
+          "icon": "castle"
+        },
+        {
+          "id": "2578ecd9-f42b-49a8-bc19-f7e965c8c0fb",
+          "name": "Great Vortex",
+          "description": "",
+          "x": 1653,
+          "y": 2620,
+          "icon": "alert"
+        },
+        {
+          "id": "a72f3ea0-0cb6-4107-9d39-ba7cc2a8975e",
+          "name": "Chrace",
+          "description": "",
+          "x": 2107,
+          "y": 1311,
+          "icon": "castle"
+        },
+        {
+          "id": "35889638-6d71-4fd3-8704-8fa3e01b6c00",
+          "name": "Merwyrm",
+          "description": "",
+          "x": 2973,
+          "y": 881,
+          "icon": "dragon"
+        },
+        {
+          "id": "ba6e76b2-b9d4-4d98-bb24-67a1a8587026",
+          "name": "White tower of Hoeth",
+          "description": "",
+          "x": 2533,
+          "y": 2653,
+          "icon": "castle"
+        }
+      ]
+    }
+  }
+}
